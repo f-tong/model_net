@@ -23,8 +23,8 @@ class BipartiteGraph:
         self.G = nx.Graph()
         self.fill_graph()
     
-    def get_graph_from_table(self, df, table, idx_rows):
-
+    def get_graph_from_table(self, df_nstr, table, idx_rows):
+        df = df_nstr.astype(str)
         G = nx.Graph()
 
         # Create Attribute Nodes (Add metadata of column_name and filename for each attribute node)
@@ -81,6 +81,8 @@ class BipartiteGraph:
         
         node_to_type_dict = nx.get_node_attributes(self.G, 'type')
         for cell in self.G.nodes():
+            if (cell not in node_to_type_dict):
+                print("Missing type for node: ", repr(cell))
             if node_to_type_dict[cell] == 'cell' or node_to_type_dict[cell] == 'global_cell':
                 self.num_cell_nodes += 1
         
